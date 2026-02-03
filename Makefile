@@ -25,6 +25,8 @@ COLOUR_END		=	\033[0m
 SOURCES_PATH 	= src/
 
 SOURCES			=	ft_strlen.s \
+					ft_strcmp.s \
+					ft_strcpy.s \
 
 # **************************************************************************** #
 #                                                                              #
@@ -57,6 +59,7 @@ clean:
 
 fclean: 
 	@rm -rf libasm.a ${OBJECTS_PATH}
+	@rm a.out
 	@echo "${COLOUR_GREEN}libasm cleaned\n${COLOUR_END}"
 
 re: fclean all
