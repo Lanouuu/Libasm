@@ -10,7 +10,6 @@ ft_strcmp:
 	xor rax, rax
 
 	.while:
-
 		mov al, byte [rdi]
 		mov cl, byte [rsi]
 

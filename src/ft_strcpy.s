@@ -9,7 +9,6 @@ ft_strcpy:
 	mov rax, rdi
 
 	.while:
-
 		mov cl, [rsi]
 		mov byte [rdi], cl 
 

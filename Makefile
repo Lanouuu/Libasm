@@ -27,6 +27,9 @@ SOURCES_PATH 	= src/
 SOURCES			=	ft_strlen.s \
 					ft_strcmp.s \
 					ft_strcpy.s \
+					ft_write.s \
+					ft_read.s \
+					ft_strdup.s \
 
 # **************************************************************************** #
 #                                                                              #
@@ -59,9 +62,14 @@ clean:
 
 fclean: 
 	@rm -rf libasm.a ${OBJECTS_PATH}
-	@rm a.out
+	@rm -rf a.out
 	@echo "${COLOUR_GREEN}libasm cleaned\n${COLOUR_END}"
 
 re: fclean all
+
+ret: fclean test
+
+test: $(NAME) main.c
+	@cc -Wall -Wextra -Werror main.c libasm.a
 
 .PHONY: fclean clean all re
