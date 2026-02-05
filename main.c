@@ -20,8 +20,8 @@ int main(void)
     }
 
     char buf[255];
-    // ft_read(0, buf, 255);
-    // printf("ft_read -> %s\n", buf);
+    ft_read(0, buf, 255);
+    printf("ft_read -> %s\n", buf);
 
     if (ft_read(-1, buf, 255) < 0)
     {
@@ -31,7 +31,12 @@ int main(void)
     char    *s = "Alan\n";
 
     char    *dup = ft_strdup(s);
+    if (!dup)
+    {
+        perror("ft_strdup error ->");
+    }
     printf("ft_strdup -> %s", dup);
+    free(dup);
 
     return (0);
 }
