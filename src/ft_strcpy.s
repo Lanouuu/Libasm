@@ -10,8 +10,8 @@ ft_strcpy:
 	mov rax, rdi			; copie du pointeur dest vers rax
 
 	.while:
-		mov cl, [rsi] 		; copie du char src vers cl
-		mov byte [rdi], cl	; copie du char de cl vers dest
+		mov cl, [rsi] 		; copie du char src vers le sous registre cl
+		mov byte [rdi], cl	; copie du char dans cl vers dest
 
 		cmp cl, 0
 		je .return			; check avec cmp si cl = \0 => jump vers return
