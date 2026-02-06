@@ -6,5 +6,3 @@ struc s_list
 endstruc
 
 section .text
-
-
