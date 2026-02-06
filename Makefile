@@ -73,7 +73,7 @@ ${OBJECTS_PATH}%.o:	${SOURCES_PATH}%.s
 
 ${OBJECTS_PATH_BONUS}%.o : ${SOURCES_PATH_BONUS}%.s
 	@mkdir -p ${OBJECTS_PATH_BONUS}
-	@${AS} ${ASFLAGS} $< -o $@ && printf "\33[2K\r${YELLOW}Compiling Libasm :${COLOUR_END} $@" 
+	@${AS} ${ASFLAGS} $< -o $@ && printf "\33[2K\r${YELLOW}Compiling Libasm bonus :${COLOUR_END} $@" 
 
 clean: 
 	@rm -rf ${OBJECTS_PATH}
