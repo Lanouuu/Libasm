@@ -34,6 +34,7 @@ int main(void)
     if (!dup)
     {
         perror("ft_strdup error ->");
+        return (1);
     }
     printf("ft_strdup -> %s", dup);
     free(dup);
