@@ -7,8 +7,9 @@ extern __errno_location
 
 section .text
 
-ft_strdup:
+; char    *ft_strdup(const char *s);
 
+ft_strdup:
     push rdi ; Conserve l'addresse de la string a dupliquer
     
     call ft_strlen wrt ..plt

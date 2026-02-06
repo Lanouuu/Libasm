@@ -3,6 +3,8 @@ bits 64
 global ft_read
 extern __errno_location
 
+; ssize_t ft_read(int fildes, void *buf, size_t nbyte);
+
 ft_read:
     mov rax, 0
     syscall

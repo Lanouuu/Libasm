@@ -4,20 +4,21 @@ global ft_strcpy
 
 section .text
 
-ft_strcpy:
+; char	*ft_strcpy(char *dest, const char *src);
 
-	mov rax, rdi
+ft_strcpy:
+	mov rax, rdi			; copie du pointeur dest vers rax
 
 	.while:
-		mov cl, [rsi]
-		mov byte [rdi], cl 
+		mov cl, [rsi] 		; copie du char src vers cl
+		mov byte [rdi], cl	; copie du char de cl vers dest
 
 		cmp cl, 0
-		je .return
+		je .return			; check avec cmp si cl = \0 => jump vers return
 
-		inc rdi
-		inc rsi
-		jmp .while
+		inc rdi				; incrementation du pointeur dest
+		inc rsi				; incrementation du pointeur src
+		jmp .while			; on continu la boucle
 
 	.return:
-		ret
+		ret					; on return rax qui contient le pointeur dest
