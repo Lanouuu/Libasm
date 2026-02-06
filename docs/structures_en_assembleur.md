@@ -156,6 +156,45 @@ Adresse Mémoire | Décalage | Membre  | Contenu
 
 C'est cette disposition prévisible qui nous permet d'utiliser la formule `[registre_base + décalage]` pour accéder à n'importe quel membre de manière fiable. La structure est essentiellement une "grille" posée sur un bloc de mémoire.
 
+### c. Alignement et Padding (Sujet Avancé)
+
+Parfois, il peut y avoir des "trous" dans une structure. C'est ce qu'on appelle le **padding** (rembourrage), et il est lié à l'**alignement mémoire**.
+
+- **Le Problème :** Les processeurs (CPU) lisent la mémoire plus efficacement lorsque les données sont "alignées". Une donnée est alignée si son adresse en mémoire est un multiple de sa taille.
+    - Un `word` (2 octets) est aligné à une adresse multiple de 2.
+    - Un `dword` (4 octets) est aligné à une adresse multiple de 4.
+    - Un `qword` (8 octets) est aligné à une adresse multiple de 8.
+- **La Pénalité :** Sur l'architecture x86-64, un accès non aligné est plus lent, car le CPU doit effectuer deux lectures mémoire au lieu d'une seule pour récupérer la donnée. Sur d'autres architectures (comme ARM), cela peut même provoquer un crash.
+- **La Solution :** Pour garantir la performance, les compilateurs et les assembleurs insèrent des octets de remplissage (padding) pour s'assurer que chaque membre de la structure commence à une adresse alignée.
+
+**Exemple de Padding :**
+
+Considérons cette structure :
+```assembly
+struc MisalignedStruct
+    .a: resb 1  ; 1 octet
+    .b: resq 1  ; 8 octets
+endstruc
+```
+
+Si une instance de cette structure commence à l'adresse `0x1000` :
+- Le membre `.a` serait à `0x1000`.
+- Sans padding, le membre `.b` commencerait à `0x1001`, ce qui n'est pas un multiple de 8. Ce serait un accès non aligné.
+
+Pour corriger cela, 7 octets de padding sont insérés après `.a`. La structure en mémoire ressemblerait à ceci :
+
+```
+Adresse Mémoire | Décalage | Contenu
+----------------|----------|--------------------------------
+0x1000          | +0       | Membre .a (1 octet)
+0x1001          | +1       | Padding (7 octets inutilisés)
+0x1008          | +8       | Membre .b (8 octets)
+0x1010          | +16      | (Fin de la structure)
+```
+La taille totale de la structure devient 16 octets au lieu de 9. Le membre `.b` est maintenant aligné, garantissant un accès rapide.
+
+NASM ne fait pas de padding automatiquement avec `struc`, mais c'est un comportement standard des compilateurs C, et il est crucial de le savoir lorsque l'on écrit de l'assembleur qui doit interagir avec du code C.
+
 ---
 
 ## Résumé et Bonnes Pratiques
