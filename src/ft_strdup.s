@@ -21,8 +21,7 @@ ft_strdup:
     mov r8, rax
     pop rdi
 
-    test rax, rax ; Voir sous quelle forme est retournee l'erreur d'un malloc en asm
-    jz .error
+    test rax, rax
     ; error
     ; js .error
     
