@@ -10,21 +10,18 @@ section .text
 ; char    *ft_strdup(const char *s);
 
 ft_strdup:
-    push rdi ; Conserve l'addresse de la string a dupliquer
+    push rdi                    ; On conserve le pointeur de la string a dupliquer
     
-    call ft_strlen wrt ..plt
-    ; rax = longueur de la string a dupliquer (sans le \0) = n bytes
+    call ft_strlen wrt ..plt    ; rax = longueur de la string a dupliquer (sans le \0) = n bytes
+    inc rax                     ; on incremente la len pour inclure le \0
 
-    inc rax
     mov rdi, rax
-    call malloc wrt ..plt
-    ; rax = addr de la zone memoire allouee
+    call malloc wrt ..plt       ; rax = addr de la zone memoire allouee
     mov r8, rax
     pop rdi
 
     test rax, rax
-    ; error
-    ; js .error
+    js .error
     
     ; r8 = addr de la memoire allouee
     ; rdi = addr de la string a dupliquer
