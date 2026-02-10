@@ -82,7 +82,7 @@ clean:
 
 fclean: 
 	@rm -rf ${NAME} ${NAME_BONUS} ${OBJECTS_PATH} ${OBJECTS_PATH_BONUS}
-	@rm -rf a.out
+	@rm -rf mandatory bonus
 	@echo "${COLOUR_GREEN}libasm cleaned\n${COLOUR_END}"
 
 re: fclean all
@@ -94,9 +94,9 @@ retb: fclean testb
 bonus: ${NAME_BONUS}
 
 test: $(NAME) main.c
-	@cc -Wall -Wextra -Werror main.c libasm.a
+	@cc -Wall -Wextra -Werror main.c libasm.a -o mandatory
 
 testb: ${NAME_BONUS} main_bonus.c
-	@cc -Wall -Wextra -Werror main_bonus.c libasm_bonus.a
+	@cc -Wall -Wextra -Werror main_bonus.c libasm_bonus.a -o bonus
 
 .PHONY: fclean clean all re

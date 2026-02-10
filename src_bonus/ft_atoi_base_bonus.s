@@ -13,6 +13,21 @@ section .text
 
 ; Gaffe overflows (si overflow retourne -1 (pas une erreur))
 
+skip_whitespace:
+    .skip:
+        movzx eax, byte [rdi]
+        cmp al, ' '
+        je .next
+        cmp al, 9
+        jb .return
+        cmp al, 13
+        ja .return
+    .next:
+        inc rdi
+        jmp .skip
+    .return:
+        ret
+
 ft_atoi_base:
 
 	; Gestion d'erreur
@@ -21,25 +36,10 @@ ft_atoi_base:
 
 	xor rcx, rcx	; +/- counter
 
-    .skip_whitespace:
-            movzx eax, byte [rdi]
-            cmp al, ' '
-            je .next
-            cmp al, 9
-            jb .sign
-            cmp al, 13
-            ja .sign
-    .next:
-        inc rdi
-        jmp .skip_whitespace
-	
-		push rdi
-	.sign:
-		call belongs_to_base
+    call skip_whitespace
 
-	pop rdi
-	inc rdi
-    
+	call belongs_to_base
+
 	.while:
 		
 		; Si fin de la string fin de la boucle 
