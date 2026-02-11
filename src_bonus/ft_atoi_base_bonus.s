@@ -44,7 +44,7 @@ check_base_char:
         pop rdi
         ret
         
-; bool  check_base_dup(char **base);                0 1 2 3 4 5
+; bool  check_base_dup(char **base);
 check_base_dup:
     xor rax, rax
     push rdi
@@ -115,26 +115,28 @@ belongs_to_base:
         pop rsi
         ret
 
-
+; void   check_plus_minus(char c)
 check_plus_minus:
     xor rax, rax
     
     cmp byte [rdi], '+'
-    je .plus
+    je .plus_minus
     cmp byte [rdi], '-'
-    je .minus
+    je .plus_minus
     jmp .return
-    .plus:
+
+    .plus_minus:
+        movzx ebx, byte[rdi]
         inc rdi
-        mov rax, 1 
-    .minus:
-        inc rdi
-        mov rax, -1
+        ret
+
     .return:
         ret
 
 
 ft_atoi_base:
+
+    xor rax, rax
 
     ; gestion d'erreur base
     push rdi
@@ -149,31 +151,36 @@ ft_atoi_base:
 
     mov rsi, rdi
     pop rdi
-	xor rax, rax
 
     ; skip les whitespaces
     call skip_whitespace
 
-    
+    ; check +/-
+    call check_plus_minus
+
+    xor rdx, rdx ; on vas stocker le resultat la dedans
 
 	.while:
-		
-        ; check si char est dans la base
-	    call belongs_to_base
-    
 		; Si fin de la string fin de la boucle 
 		cmp byte [rdi], 0
 		je .return
 
-			
+        ; check si char est dans la base
+	    call belongs_to_base
+        cmp rax, 0
+        je .return
 
+			
+        ; plus qu'a convertir et c'est GOOD le tigre !!!
 
 
 		inc rdi
 		jmp .while
 
     .return:
-
-    .error:
+        mov rax, rdx
+        ret
 
     .overflow:
+        movzx byte [rax], -1
+        ret
