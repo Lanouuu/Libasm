@@ -1,6 +1,7 @@
 bits 64
 
 global ft_atoi_base
+extern ft_strlen
 
 section .text
 
@@ -133,32 +134,52 @@ check_plus_minus:
     .return:
         ret
 
+; int   get_index(char c, char **base)
+get_index:
+    xor rcx, rcx
+    push rsi
+
+    .find:
+        cmp dl, byte [rsi]
+        je .found
+
+        inc rsi
+        inc rcx
+        jmp .find
+
+    .found:
+        pop rsi
+        mov rax, rcx
+        ret
 
 ft_atoi_base:
 
-    xor rax, rax
+    xor rdx, rdx
 
     ; gestion d'erreur base
     push rdi
     mov rdi, rsi
     call check_base_char
     cmp rax, 0
-    je .error
+    je .return
 
     call check_base_char
     cmp rax, 0
-    je .error
+    je .return
 
-    mov rsi, rdi
+    push rdi
+    
+    call ft_strlen
+    mov r8, rax
+    pop rsi
     pop rdi
+
 
     ; skip les whitespaces
     call skip_whitespace
 
     ; check +/-
     call check_plus_minus
-
-    xor rdx, rdx ; on vas stocker le resultat la dedans
 
 	.while:
 		; Si fin de la string fin de la boucle 
@@ -172,6 +193,13 @@ ft_atoi_base:
 
 			
         ; plus qu'a convertir et c'est GOOD le tigre !!!
+        call get_index
+
+        add rdx, rax
+        imul rdx, r8
+        ; check overflow flag
+        
+        
 
 
 		inc rdi
@@ -182,5 +210,5 @@ ft_atoi_base:
         ret
 
     .overflow:
-        movzx byte [rax], -1
+        mov byte [rax], -1
         ret

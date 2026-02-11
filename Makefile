@@ -37,6 +37,7 @@ SOURCES				=	ft_strlen.s \
 
 SOURCES_BONUS		=	ft_atoi_base_bonus.s \
 						ft_list_push_front_bonus.s \
+						ft_strlen_bonus.s \
 
 # **************************************************************************** #
 #                                                                              #
