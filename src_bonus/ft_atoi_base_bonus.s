@@ -230,11 +230,19 @@ ft_atoi_base:
 
     .return:
         mov rax, rbx
+        cmp dword [rbp - 32], -1
+        je .invert
+
+    .epilogue:
         add rsp, 8
         pop rbx
         mov rsp, rbp
         pop rbp
         ret
+
+    .invert:
+        imul rax, -1
+        jmp .epilogue
 
     .returnerror:
         mov rsp, rbp

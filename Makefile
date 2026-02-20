@@ -99,6 +99,5 @@ test: $(NAME) main.c
 
 testb: ${NAME_BONUS} main_bonus.c
 	@cc -Wall -Wextra -Werror main_bonus.c libasm_bonus.a -o bonus
-	./bonus ff
 
 .PHONY: fclean clean all re
