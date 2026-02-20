@@ -3,7 +3,7 @@
 int main(void)
 {
     /////////////////////////////////////////// ft_strlen
-    size_t r = ft_strlen("Hello world!");
+    size_t r = ft_strlen("Hello worldu!");
     printf("ft_strlen -> %zu\n", r);
 
 

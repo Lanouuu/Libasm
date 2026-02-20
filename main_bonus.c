@@ -6,6 +6,6 @@
 int main(int ac, char **av)
 {
     (void)ac;
-    printf("%d\n", atoi(av[1]));
+    printf("%d\n", ft_atoi_base(av[1], "0123456789abcdef"));
     return (0);
 }

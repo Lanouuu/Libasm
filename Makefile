@@ -65,8 +65,8 @@ ${NAME} : ${OBJECTS}
 	@ar -rcs ${NAME} ${OBJECTS}
 	@echo "${COLOUR_GREEN}\33[2K\nLibasm compiled\n${COLOUR_END}"
 
-${NAME_BONUS} : ${OBJECTS_BONUS}
-	@ar -rcs ${NAME_BONUS} ${OBJECTS_BONUS}
+${NAME_BONUS} : ${OBJECTS_BONUS} ${OBJECTS}
+	@ar -rcs ${NAME_BONUS} ${OBJECTS_BONUS} ${OBJECTS}
 	@echo "${COLOUR_GREEN}\33[2K\nLibasm bonus compiled\n${COLOUR_END}"
 
 ${OBJECTS_PATH}%.o:	${SOURCES_PATH}%.s
@@ -99,5 +99,6 @@ test: $(NAME) main.c
 
 testb: ${NAME_BONUS} main_bonus.c
 	@cc -Wall -Wextra -Werror main_bonus.c libasm_bonus.a -o bonus
+	./bonus ff
 
 .PHONY: fclean clean all re

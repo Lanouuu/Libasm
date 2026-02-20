@@ -1,4 +1,5 @@
 bits 64
+default rel
 
 global ft_atoi_base
 extern ft_strlen
@@ -15,12 +16,13 @@ section .text
 ; Gaffe overflows (si overflow retourne -1 (pas une erreur))
 
 ; bool  check_base_char(char **base);
+; Return 0 si la base contient des char interdits
 check_base_char:
     xor rax, rax
     push rdi
 
     .while:
-        movzx edx, byte [rdi]
+        mov dl, byte [rdi]
 
         cmp dl, 0
         je .endwhile
@@ -46,12 +48,13 @@ check_base_char:
         ret
         
 ; bool  check_base_dup(char **base);
+; Return 0 si la base contient un doublon
 check_base_dup:
     xor rax, rax
     push rdi
 
     .while:
-        movzx edx, byte [rdi]
+        mov dl, byte [rdi]
         
         cmp dl, 0
         je .endwhile
@@ -77,8 +80,8 @@ check_base_dup:
         pop rdi
         ret
 
-
 ; void  skip_whitespace(char **str);
+; Incremente rdi pour rogner les whitespaces
 skip_whitespace:
     .skip:
         movzx eax, byte [rdi]
@@ -94,119 +97,149 @@ skip_whitespace:
     .return:
         ret
 
+; void   check_plus_minus(char c)
+; Check si le premier char est un + ou un - et renvoie respectivement 1 ou -1
+; Return 0 si autre 
+check_plus_minus:
+    xor rax, rax
+    
+    cmp byte [rdi], '+'
+    je .plus
+    cmp byte [rdi], '-'
+    je .minus
+    ret
+
+    .plus:
+        inc rdi
+        mov rax, 1
+        ret
+
+    .minus:
+        inc rdi
+        mov rax, -1
+        ret
+
 ; bool  belongs_to_base(char c, char **base);
+; Return 1 si c appartient a base
 belongs_to_base:
     xor rax, rax
-    push rsi
+    xor rcx, rcx
 
     .while:
-        cmp byte [rsi], 0
+        cmp byte [rsi + rcx], 0
         je .return
 
-        cmp dil, byte [rsi]
+        cmp dil, byte [rsi + rcx]
         je .true
         
-        inc rsi
+        inc rcx
         jmp .while
 
     .true:
         mov rax, 1
 
     .return:
-        pop rsi
         ret
 
-; void   check_plus_minus(char c)
-check_plus_minus:
-    xor rax, rax
-    
-    cmp byte [rdi], '+'
-    je .plus_minus
-    cmp byte [rdi], '-'
-    je .plus_minus
-    jmp .return
-
-    .plus_minus:
-        movzx ebx, byte[rdi]
-        inc rdi
-        ret
-
-    .return:
-        ret
 
 ; int   get_index(char c, char **base)
+; Conserve rsi
+; Renvoie l'indice dans le base du char c
 get_index:
     xor rcx, rcx
-    push rsi
 
     .find:
-        cmp dl, byte [rsi]
+        cmp dil, byte [rsi + rcx]
         je .found
 
-        inc rsi
         inc rcx
         jmp .find
 
     .found:
-        pop rsi
         mov rax, rcx
         ret
 
+
+; int ft_atoi_base(char *str, char *base);
+
 ft_atoi_base:
 
-    xor rdx, rdx
+    ; -8 ==> str
+    ; -16 ==> base
+    ; -24 ==> longueur de la base
+    ; -32 ==> -1 1 0 -> sign
 
-    ; gestion d'erreur base
-    push rdi
-    mov rdi, rsi
-    call check_base_char
-    cmp rax, 0
-    je .return
+    ; Prologue stack frame
+    push rbp 
+    mov rbp, rsp
+    sub rsp, 32                             ; Parceque 4 variable + alignement
 
-    call check_base_char
-    cmp rax, 0
-    je .return
+    ; On sauvegarde (soit stack frame soit registre callee-save (non volatile) genre r12 ou rbx)
+    mov [rbp - 8], rdi                      ; Param 1 = str 
+    mov [rbp - 16], rsi                     ; Param 2 = base
 
-    push rdi
-    
+    mov rdi, [rbp - 16]                     ; On recup la base pour check
     call ft_strlen
-    mov r8, rax
-    pop rsi
-    pop rdi
+    cmp rax, 0
+    je .returnerror
+    mov [rbp - 24], rax                     ; On save en local
+
+    call check_base_char
+    cmp rax, 0
+    je .returnerror
+
+    call check_base_dup
+    cmp rax, 0
+    je .returnerror
 
 
-    ; skip les whitespaces
-    call skip_whitespace
+    mov rdi, [rbp - 8]                      ; Charge var1 (str) dans rdi
+    call skip_whitespace                    ; Logiquement rdi pointe le premier "vrai" char
 
-    ; check +/-
     call check_plus_minus
+    mov [rbp - 32], rax                     ; Valeur +/- stockee en variable local aka stackframe
 
-	.while:
+    push rbx
+    sub rsp, 8                              ; Alignement stack
+    xor rbx, rbx                            ; On va stocker la valeur ici
+    mov r10, rdi                            ; On va iterer avec r10 pour laisser rdi prendre le char
+
+  	.while:
 		; Si fin de la string fin de la boucle 
-		cmp byte [rdi], 0
+		cmp byte [r10], 0
 		je .return
 
         ; check si char est dans la base
+        movzx rdi, byte [r10]               ; Chargement du char pour le call a fonction
 	    call belongs_to_base
         cmp rax, 0
         je .return
 
 			
-        ; plus qu'a convertir et c'est GOOD le tigre !!!
-        call get_index
+        call get_index                      ; get l'index du char dans la base
 
-        add rdx, rax
-        imul rdx, r8
+        imul rbx, [rbp - 24]                ; On multiplie par la longueur de la base
+        add rbx, rax                        ; On ajoute l'index au resultat
+        
         ; check overflow flag
-        
-        
+        ; plus minus
 
-
-		inc rdi
+		inc r10
 		jmp .while
 
+
     .return:
-        mov rax, rdx
+        mov rax, rbx
+        add rsp, 8
+        pop rbx
+        mov rsp, rbp
+        pop rbp
+        ret
+
+    .returnerror:
+        mov rsp, rbp
+        pop rbp
+        mov rax, -4
         ret
 
     .overflow:

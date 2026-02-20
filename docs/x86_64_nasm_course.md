@@ -96,24 +96,24 @@ Low addresses
 
 In x86-64, you have 16 general-purpose registers:
 
-| 64-bit | 32-bit | 16-bit | 8-bit (low) | 8-bit (high) | Purpose |
-|--------|--------|--------|-------------|--------------|---------|
-| `rax`  | `eax`  | `ax`   | `al` 		 | 		`ah`	| Accumulator, return value |
-| `rbx`  | `ebx`  | `bx`   | `bl` 		 | 		`bh`	| Base (callee-saved) |
-| `rcx`  | `ecx`  | `cx`   | `cl` 		 | 		`ch`	| Counter, 4th argument |
-| `rdx`  | `edx`  | `dx`   | `dl` 		 | 		`dh`	| Data, 3rd argument |
-| `rsi`  | `esi`  | `si`   | `sil` 		 | 		- 		| Source index, 2nd argument |
+| 64-bit | 32-bit | 16-bit | 8-bit (low) | 8-bit (high) | Purpose                         |
+|--------|--------|--------|-------------|--------------|---------------------------------|
+| `rax`  | `eax`  | `ax`   | `al` 		 | 		`ah`	| Accumulator, return value       |
+| `rbx`  | `ebx`  | `bx`   | `bl` 		 | 		`bh`	| Base (callee-saved)             |
+| `rcx`  | `ecx`  | `cx`   | `cl` 		 | 		`ch`	| Counter, 4th argument           |
+| `rdx`  | `edx`  | `dx`   | `dl` 		 | 		`dh`	| Data, 3rd argument              |
+| `rsi`  | `esi`  | `si`   | `sil` 		 | 		- 		| Source index, 2nd argument      |
 | `rdi`  | `edi`  | `di`   | `dil` 		 | 		- 		| Destination index, 1st argument |
-| `rbp`  | `ebp`  | `bp`   | `bpl` 		 | 		- 		| Base pointer (callee-saved) |
-| `rsp`  | `esp`  | `sp`   | `spl` 		 | 		- 		| Stack pointer |
-| `r8`   | `r8d`  | `r8w`  | `r8b` 		 | 		- 		| 5th argument |
-| `r9`   | `r9d`  | `r9w`  | `r9b` 		 | 		- 		| 6th argument |
-| `r10`  | `r10d` | `r10w` | `r10b` 	 | 		- 		| Caller-saved |
-| `r11`  | `r11d` | `r11w` | `r11b` 	 | 		- 		| Caller-saved |
-| `r12`  | `r12d` | `r12w` | `r12b` 	 | 		- 		| Callee-saved |
-| `r13`  | `r13d` | `r13w` | `r13b` 	 | 		- 		| Callee-saved |
-| `r14`  | `r14d` | `r14w` | `r14b` 	 | 		- 		| Callee-saved |
-| `r15`  | `r15d` | `r15w` | `r15b` 	 | 		- 		| Callee-saved |
+| `rbp`  | `ebp`  | `bp`   | `bpl` 		 | 		- 		| Base pointer (callee-saved)     |
+| `rsp`  | `esp`  | `sp`   | `spl` 		 | 		- 		| Stack pointer                   |
+| `r8`   | `r8d`  | `r8w`  | `r8b` 		 | 		- 		| 5th argument                    |
+| `r9`   | `r9d`  | `r9w`  | `r9b` 		 | 		- 		| 6th argument                    |
+| `r10`  | `r10d` | `r10w` | `r10b` 	 | 		- 		| Caller-saved                    |
+| `r11`  | `r11d` | `r11w` | `r11b` 	 | 		- 		| Caller-saved                    |
+| `r12`  | `r12d` | `r12w` | `r12b` 	 | 		- 		| Callee-saved                    |
+| `r13`  | `r13d` | `r13w` | `r13b` 	 | 		- 		| Callee-saved                    |
+| `r14`  | `r14d` | `r14w` | `r14b` 	 | 		- 		| Callee-saved                    |
+| `r15`  | `r15d` | `r15w` | `r15b` 	 | 		- 		| Callee-saved                    |
 
 ### Register Visualization
 ```
