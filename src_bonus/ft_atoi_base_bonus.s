@@ -27,7 +27,7 @@ check_base_char:
         cmp dl, 0
         je .endwhile
 
-        cmp dl, 9
+        cmp dl, 14
         jb .return
         cmp dl, 127
         ja .return
@@ -161,7 +161,6 @@ get_index:
 
 
 ; int ft_atoi_base(char *str, char *base);
-
 ft_atoi_base:
 
     ; -8 ==> str
@@ -219,10 +218,11 @@ ft_atoi_base:
         call get_index                      ; get l'index du char dans la base
 
         imul rbx, [rbp - 24]                ; On multiplie par la longueur de la base
+        jo .overflow
         add rbx, rax                        ; On ajoute l'index au resultat
+        jo .overflow
         
         ; check overflow flag
-        ; plus minus
 
 		inc r10
 		jmp .while
@@ -247,9 +247,9 @@ ft_atoi_base:
     .returnerror:
         mov rsp, rbp
         pop rbp
-        mov rax, -4
+        mov rax, 0
         ret
 
     .overflow:
-        mov byte [rax], -1
-        ret
+        mov rax, 0
+        jmp .epilogue
