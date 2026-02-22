@@ -1,0 +1,8 @@
+Recheck les fonctions obligatoires:
+
+1. Voir si il faut conserver rdi ou pas (c'etait le cas pour strlen)
+2. Voir pour l'optimisation / bonnes pratiques
+
+Pour tout:
+1. Ajouter default rel au lieu de l'utiliser a chaque instruction
+2. check wrt..plt a chaque appel de fonction externe
