@@ -242,6 +242,7 @@ ft_atoi_base:
 
     .invert:
         imul rax, -1
+        jo .overflow
         jmp .epilogue
 
     .returnerror:
