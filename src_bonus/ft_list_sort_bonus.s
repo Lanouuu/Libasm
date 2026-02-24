@@ -32,7 +32,7 @@ switch_node:
 		mov rax, [rcx + s_list.next]
 		mov [rcx + s_list.next], rdx
 		mov [rdx + s_list.next], rax
-		mov rdi, rcx						; rdi n'est plus qu'un simple pointeur
+		mov [rdi], rcx
 
 		ret
 
@@ -90,9 +90,12 @@ ft_list_sort:
 			mov rcx, r13
 
 			call switch_node
-			mov [rbp - 8], rdi
+			mov r14, r13
+			inc r12
+			jmp .innerwhile
 			.skipswitch:
 
+			; a exec si on switch pas
 			mov r14, [rbp - 16]					; Pointeur vers le noeud d'avant
 			mov [rbp - 16], r13
 			inc r12
@@ -100,7 +103,9 @@ ft_list_sort:
 			jmp .innerwhile
 
 		.end:
-			; Reset [rbp - 16] aka le noeud actuel pour boucler depuis le debut
+			mov r8, [rbp - 8]
+			mov r9, [r8]
+			mov [rbp - 16], r9
 			dec qword [rbp - 32]
 			jmp .while
 
@@ -112,7 +117,9 @@ ft_list_sort:
 		pop r12
 		mov rsp, rbp
 		pop rbp
-		lea rdi, rdi
 		ret
 
 		; double pointeur dans switch
+
+		; r13 noeud apres
+		; [rbp - 16] noeud courrant
