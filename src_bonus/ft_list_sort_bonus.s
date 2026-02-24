@@ -49,8 +49,6 @@ ft_list_sort:
 	mov [rbp - 16], rdi 			; *node
 	mov [rbp - 24], rsi 			; *cmp
 
-
-
 	xor rax, rax
 	call ft_list_size
 	cmp rax, 1
@@ -58,42 +56,45 @@ ft_list_sort:
 	mov [rbp - 32], rax
 
 	push r12
+	push r13
+	push r14
 	sub rsp, 8
+
 	.while:
 
 		cmp qword [rbp - 32], 1
 		je .return
 
-		mov r12 , 1					; r12 = Compteur
-		xor r9, r9
+		mov r12 , 1								; r12 = Compteur
+		xor r14, r14
 
 		.innerwhile:
 			cmp r12, [rbp - 32]
 			je .end
 
-			mov r8, [rbp - 16]				; DOUTES
-			mov r8, [r8 + s_list.next]		; pointer vers le noeud d'apres
+			mov r13, [rbp - 16]					; DOUTES
+			mov r13, [r13 + s_list.next]		; pointer vers le noeud d'apres
 
-			mov rdi, [rbp - 16]				; pointeur vers le noeud actuel
+			mov rdi, [rbp - 16]					; pointeur vers le noeud actuel
 			mov rdi, [rdi + s_list.data]
-			mov rsi, r8
+			mov rsi, r13
 			mov rsi, [rsi + s_list.data]
-			call [rbp - 24]					; Call fonction de comparaison
+			call [rbp - 24]						; Call fonction de comparaison
 
 			cmp rax, 0
 			jle .skipswitch
 
 			mov rdi, [rbp - 8]
-			mov rsi, r9
+			mov rsi, r14
 			mov rdx, [rbp - 16]
-			mov rcx, r8
+			mov rcx, r13
 
 			call switch_node
 			mov [rbp - 8], rdi
 			.skipswitch:
 
-			mov r9, [rbp - 16]				; Pointeur vers le noeud d'avant
-			mov [rbp - 16], r8
+			mov r14, [rbp - 16]					; Pointeur vers le noeud d'avant
+			mov [rbp - 16], r13
 			inc r12
 
 			jmp .innerwhile
@@ -106,11 +107,12 @@ ft_list_sort:
 	.return:
 		mov rdi, [rbp - 8]
 		add rsp, 8
+		pop r14
+		pop r13
 		pop r12
 		mov rsp, rbp
 		pop rbp
+		lea rdi, rdi
 		ret
 
-
-		; mettre r8 et r9 en non volatile
 		; double pointeur dans switch
