@@ -10,31 +10,10 @@ endstruc
 section .text
 
 global ft_list_sort
-extern ft_list_size
+extern ft_list_push_front
 
-switch_node:
+insert_node:
 
-	;rdi tete de liste
-	;rsi	i - 1
-	;rdx	i		|	--> Switch
-	;rcx	i + 1	|
-	cmp rsi, 0
-	je .changehead			; Ca veut dire que le noeud actuel (i) est en premiere position dans la liste
-
-	mov rax, [rcx + s_list.next]
-	mov [rdx + s_list.next], rax
-	mov [rcx + s_list.next], rdx
-	mov [rsi + s_list.next], rcx
-
-	ret
-
-	.changehead:
-		mov rax, [rcx + s_list.next]
-		mov [rcx + s_list.next], rdx
-		mov [rdx + s_list.next], rax
-		mov [rdi], rcx
-
-		ret
 
 
 ; void ft_list_sort(t_list **begin_list, int (*cmp)())
@@ -43,94 +22,33 @@ ft_list_sort:
 	push rbp
 	mov rbp, rsp
 
-	sub rsp, 32
+	sub rsp, 16
 	mov [rbp - 8], rdi				; **begin_list
-	mov rdi, [rdi]
-	mov [rbp - 16], rdi 			; *node
-	mov [rbp - 24], rsi 			; *cmp
+	mov [rbp - 16], rsi 			; *cmp
 
-	xor rax, rax
-	call ft_list_size
-	cmp rax, 1
-	jbe .return
-	mov [rbp - 32], rax
 
+	push rbx
 	push r12
-	push r13
-	push r14
-	sub rsp, 8
+	mov rdi, [rdi]
+	mov rbx, [rdi + s_list.next]	; cursor sur la liste non triee
+	mov [rdi + s_list.next], 0
+	mov r12, rdi
 
-	; r12			= Compteur d'iteration
-	; r13			= pointeur vers current node + 1 (node -> next)
-	; [rbp - 16]	= pointeur vers current node
-	; r14			= pointeur vers current node - 1
-
-
-	.while:
-
-		cmp qword [rbp - 32], 1
+	.while: 
+		cmp rbx, 0					; head == NULL
 		je .return
 
-		mov r12 , 1								; r12 = Compteur
-		xor r14, r14							
+		; utiliser r12 comme pointeur vers sorted + le noeud de la liste courrante a trier
+		call insert_node
 
-		.innerwhile:
-			cmp r12, [rbp - 32]
-			je .end
-
-			mov r13, [rbp - 16]					; DOUTES
-			mov r13, [r13 + s_list.next]		; pointer vers le noeud d'apres
-
-			mov rdi, [rbp - 16]					
-			mov rdi, [rdi + s_list.data]
-			mov rsi, r13
-			mov rsi, [rsi + s_list.data]
-			
-			; rdi = data current node
-			; rsi = data current node + 1
-
-			call [rbp - 24]						; Call fonction de comparaison
-
-			cmp rax, 0
-			jle .skipswitch
-
-			mov rdi, [rbp - 8]
-			mov rsi, r14
-			mov rdx, [rbp - 16]
-			mov rcx, r13
-
-			; rdi = tete de liste (**begin_list)
-			; rsi = pointeur current node - 1
-			; rdx = pointeur current node
-			; rcx = pointeur current node + 1
-
-			call switch_node
-			mov r14, r13
-			inc r12
-			jmp .innerwhile
-			.skipswitch:
-
-			; a exec si on switch pas
-			mov r14, [rbp - 16]					; Pointeur vers le noeud d'avant
-			mov [rbp - 16], r13
-			inc r12
-
-			jmp .innerwhile
-
-		.end:
-			mov r8, [rbp - 8]
-			mov r9, [r8]
-			mov [rbp - 16], r9
-			dec qword [rbp - 32]
-			xor r14, r14
-			jmp .while
+		mov rbx, [rbx + s_list.next]	; rbp24 contient l'adresse du premier node
+		jmp .while
 
 	.return:
 		mov rdi, [rbp - 8]
-		add rsp, 8
-		pop r14
-		pop r13
+		mov [rdi], r12
 		pop r12
+		pop rbx
 		mov rsp, rbp
 		pop rbp
 		ret
