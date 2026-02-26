@@ -21,10 +21,10 @@ switch_node:
 	cmp rsi, 0
 	je .changehead			; Ca veut dire que le noeud actuel (i) est en premiere position dans la liste
 
-	mov [rsi + s_list.next], rcx
 	mov rax, [rcx + s_list.next]
-	mov [rcx + s_list.next], rdx
 	mov [rdx + s_list.next], rax
+	mov [rcx + s_list.next], rdx
+	mov [rsi + s_list.next], rcx
 
 	ret
 
@@ -60,13 +60,19 @@ ft_list_sort:
 	push r14
 	sub rsp, 8
 
+	; r12			= Compteur d'iteration
+	; r13			= pointeur vers current node + 1 (node -> next)
+	; [rbp - 16]	= pointeur vers current node
+	; r14			= pointeur vers current node - 1
+
+
 	.while:
 
 		cmp qword [rbp - 32], 1
 		je .return
 
 		mov r12 , 1								; r12 = Compteur
-		xor r14, r14
+		xor r14, r14							
 
 		.innerwhile:
 			cmp r12, [rbp - 32]
@@ -75,10 +81,14 @@ ft_list_sort:
 			mov r13, [rbp - 16]					; DOUTES
 			mov r13, [r13 + s_list.next]		; pointer vers le noeud d'apres
 
-			mov rdi, [rbp - 16]					; pointeur vers le noeud actuel
+			mov rdi, [rbp - 16]					
 			mov rdi, [rdi + s_list.data]
 			mov rsi, r13
 			mov rsi, [rsi + s_list.data]
+			
+			; rdi = data current node
+			; rsi = data current node + 1
+
 			call [rbp - 24]						; Call fonction de comparaison
 
 			cmp rax, 0
@@ -88,6 +98,11 @@ ft_list_sort:
 			mov rsi, r14
 			mov rdx, [rbp - 16]
 			mov rcx, r13
+
+			; rdi = tete de liste (**begin_list)
+			; rsi = pointeur current node - 1
+			; rdx = pointeur current node
+			; rcx = pointeur current node + 1
 
 			call switch_node
 			mov r14, r13
@@ -107,6 +122,7 @@ ft_list_sort:
 			mov r9, [r8]
 			mov [rbp - 16], r9
 			dec qword [rbp - 32]
+			xor r14, r14
 			jmp .while
 
 	.return:
@@ -118,8 +134,3 @@ ft_list_sort:
 		mov rsp, rbp
 		pop rbp
 		ret
-
-		; double pointeur dans switch
-
-		; r13 noeud apres
-		; [rbp - 16] noeud courrant
