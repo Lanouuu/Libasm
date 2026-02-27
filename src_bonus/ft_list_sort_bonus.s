@@ -10,7 +10,6 @@ endstruc
 section .text
 
 global ft_list_sort
-extern ft_list_push_front
 
 
 ; void ft_list_sort(t_list **begin_list, int (*cmp)())

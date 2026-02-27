@@ -40,6 +40,7 @@ SOURCES_BONUS		=	ft_atoi_base_bonus.s \
 						ft_list_size_bonus.s \
 						ft_list_sort_bonus.s \
 						ft_strlen_bonus.s \
+						ft_list_remove_if_bonus.s \
 
 # **************************************************************************** #
 #                                                                              #

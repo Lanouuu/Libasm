@@ -1,4 +1,5 @@
 bits 64
+default rel
 
 global ft_read
 extern __errno_location

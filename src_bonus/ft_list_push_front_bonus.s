@@ -29,7 +29,7 @@ ft_list_push_front:
 
 	; 1.
 	mov rdi, s_list.size
-	call malloc								; Allocation du nouveau noeud
+	call malloc wrt..plt					; Allocation du nouveau noeud
 	cmp rax, 0								; Check erreur malloc
 	je .error
 

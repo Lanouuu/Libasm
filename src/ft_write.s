@@ -1,4 +1,5 @@
 bits 64
+default rel
 
 global ft_write
 extern __errno_location

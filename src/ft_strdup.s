@@ -1,4 +1,5 @@
 bits 64
+default rel
 
 global ft_strdup
 extern ft_strlen

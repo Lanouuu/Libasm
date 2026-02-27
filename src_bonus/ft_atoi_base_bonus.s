@@ -178,7 +178,7 @@ ft_atoi_base:
     mov [rbp - 16], rsi                     ; Param 2 = base
 
     mov rdi, [rbp - 16]                     ; On recup la base pour check
-    call ft_strlen
+    call ft_strlen wrt..plt
     cmp rax, 0
     je .returnerror
     mov [rbp - 24], rax                     ; On save en local

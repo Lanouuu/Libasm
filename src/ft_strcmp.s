@@ -1,4 +1,5 @@
 bits 64
+default rel
 
 global ft_strcmp
 
@@ -7,6 +8,9 @@ section .text
 ; int strcmp(const char *s1, const char *s2);
 
 ft_strcmp:
+
+	push rdi
+	push rsi
 	xor rax, rax
 
 	.while:
@@ -29,4 +33,6 @@ ft_strcmp:
 		movzx eax, al
 		movzx ecx, cl
 		sub eax, ecx
-		ret 
+		pop rsi
+		pop rdi
+		ret

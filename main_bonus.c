@@ -12,43 +12,27 @@ int main(int ac, char **av)
 
     t_list  *begin_list = NULL;
 
-    char *data1 = malloc(sizeof(char *));
-    char *data2 = malloc(sizeof(char *));
-    char *data3 = malloc(sizeof(char *));
-    if (!data1 || !data2 || !data3)
+    char *data1 = strdup("data1");
+    char *data2 = strdup("data2");
+    char *data3 = strdup("data3");
+    char *data4 = strdup("data4");
+    char *data5 = strdup("data5");
+    if (!data1 || !data2 || !data3 || !data4 || !data5)
         return (1);
 
-    data1 = "data1";
-    data2 = "data2";
-    data3 = "data3";
-
-    printf("data1 address: %p, value: %s\n", data1, data1);
-    printf("data2 address: %p, value: %s\n", data2, data2);
-    printf("data3 address: %p, value: %s\n", data3, data3);
-
     ft_list_push_front(&begin_list, data1);
-    printf("\nNew link data address: %p\n", begin_list->data);
-    printf("New link data value: %s\n", (char *)begin_list->data);
     ft_list_push_front(&begin_list, data2);
-    printf("\nNew link data address: %p\n", begin_list->data);
-    printf("New link data value: %s\n", (char *)begin_list->data);
-    // ft_list_push_front(&begin_list, data3);
-    // printf("\nNew link data address: %p\n", begin_list->data);
-    // printf("New link data value: %s\n", (char *)begin_list->data);
-    // ft_list_push_front(&begin_list, data1);
-    // printf("\nNew link data address: %p\n", begin_list->data);
-    // printf("New link data value: %s\n", (char *)begin_list->data);
-    // ft_list_push_front(&begin_list, data3);
-    // printf("\nNew link data address: %p\n", begin_list->data);
-    // printf("New link data value: %s\n", (char *)begin_list->data);
+    ft_list_push_front(&begin_list, data3);
+    ft_list_push_front(&begin_list, data4);
+    ft_list_push_front(&begin_list, data5);
 
     int lSize = ft_list_size(begin_list);
 
-    printf("List size = %d\n", lSize);
+    printf("List size = %d\n\n", lSize);
     
     int i = 0;
     t_list *curs = begin_list;
-    printf("BEFORE\n");
+    printf("PUSH_FRONT\n");
     while (begin_list)
     {
         printf("Node %d data: %s\n", i++, (char *)begin_list->data);
@@ -57,14 +41,37 @@ int main(int ac, char **av)
 
     begin_list = curs;
     ft_list_sort(&begin_list, strcmp);
+    curs = begin_list;
     printf("\n\n");
 
     i = 0;
-    printf("AFTER\n");
+    printf("LIST_SORT\n");
     while (begin_list)
     {
         printf("Node %d data: %s\n", i++, (char *)begin_list->data);
         begin_list = begin_list->next;
+    }
+    printf("\n\n");
+
+
+    begin_list = curs;
+    ft_list_remove_if(&begin_list, "data3", strcmp, free);
+    printf("LIST_REMOVE_IF\n");
+    i = 0;
+    while (begin_list)
+    {
+        printf("Node %d data: %s\n", i++, (char *)begin_list->data);
+        begin_list = begin_list->next;
+    }
+
+    begin_list = curs;
+    i = 0;
+    while (begin_list)
+    {
+        t_list *temp = begin_list;
+        free(begin_list->data);
+        begin_list = begin_list->next;
+        free(temp);
     }
 
     return (0);
