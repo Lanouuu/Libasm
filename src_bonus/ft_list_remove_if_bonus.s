@@ -65,7 +65,7 @@ ft_list_remove_if:
         mov rdi, rbx
         mov rbx, [rbx + s_list.next]
         
-        call free wrt..plt
+        call free wrt ..plt
 
         jmp .while
 
@@ -75,7 +75,7 @@ ft_list_remove_if:
         mov r8, [rbp - 8]
         mov [r8], rbx
 
-        call free wrt..plt
+        call free wrt ..plt
 
         jmp .while
 
