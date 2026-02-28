@@ -19,7 +19,7 @@ ft_read:
         neg rax
         push rax
         call __errno_location wrt ..plt
-        pop rdi
-        mov [rax], edi
+        pop r10
+        mov [rax], r10d
         mov rax, -1
         ret

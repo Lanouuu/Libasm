@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <string.h>
 
 size_t  ft_strlen(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);

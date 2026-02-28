@@ -18,16 +18,16 @@ ft_strdup:
 
     mov rdi, rax
     call malloc wrt ..plt       ; rax = addr de la zone memoire allouee
-    mov r8, rax
-    pop rdi
-
     test rax, rax
-    js .error
-    
+    jz .error
+
+    mov r8, rax
+    pop rdx
+
     ; r8 = addr de la memoire allouee
     ; rdi = addr de la string a dupliquer
     .while:
-        mov cl, [rdi]
+        mov cl, [rdx]
         mov [r8], cl
 
         cmp cl, 0
@@ -35,7 +35,7 @@ ft_strdup:
 
 
         inc r8
-        inc rdi
+        inc rdx
         jmp .while
     
     .return:
@@ -45,4 +45,5 @@ ft_strdup:
         call __errno_location wrt ..plt
         mov dword [rax], 12
         xor rax, rax
+        pop rdi
         ret

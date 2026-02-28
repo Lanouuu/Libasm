@@ -1,4 +1,3 @@
 Recheck les fonctions obligatoires:
 
-1. Voir si il faut conserver rdi ou pas (c'etait le cas pour strlen)
 2. Voir pour l'optimisation / bonnes pratiques

@@ -24,7 +24,11 @@ int main(int ac, char **av)
 
     /////////////////////////////////////////// ft_atoi_base
     printf("ATOI_BASE:\n");
-    printf("%d\n", ft_atoi_base(av[1], "0123456789abcdef"));
+    printf("atoi_base OK -> %d\n", ft_atoi_base(av[1], "0123456789abcdef"));
+    printf("atoi_base base empty -> %d\n", ft_atoi_base(av[1], ""));
+    printf("atoi_base str empty -> %d\n", ft_atoi_base("", "0123456789abcdef"));
+    printf("atoi_base base size one -> %d\n", ft_atoi_base(av[1], "0"));
+    printf("atoi_base base invalid char -> %d\n", ft_atoi_base(av[1], "-+ \n\t"));
     printf("\n\n");
 
 
@@ -63,7 +67,9 @@ int main(int ac, char **av)
 
     /////////////////////////////////////////// ft_list_size
     int lSize = ft_list_size(begin_list);
+    int Osize = ft_list_size(NULL);
     printf("List size = %d\n\n", lSize);
+    printf("List size list empty = %d\n\n", Osize);
     printf("\n\n");
 
 
@@ -82,10 +88,35 @@ int main(int ac, char **av)
     ft_list_remove_if(&begin_list, "data3", strcmp, free);
     printf("LIST_REMOVE_IF:\n");
     print_list(begin_list);
+
+    char *str1 = strdup("data1");
+    char *str2 = strdup("data1");
+    char *str3 = strdup("data1");
+    char *str4 = strdup("data1");
+    char *str5 = strdup("data1");
+
+    t_list  *test = NULL;
+    ft_list_push_front(&test, str1);
+    ft_list_push_front(&test, str2);
+    ft_list_push_front(&test, str3);
+    ft_list_push_front(&test, str4);
+    ft_list_push_front(&test, str5);
+
     printf("\n\n");
+    printf("LIST_REMOVE_IF delete nothing: before\n");
+    print_list(test);
 
+    ft_list_remove_if(&test, "data3", strcmp, free);
+    
+    printf("\n\n");
+    printf("LIST_REMOVE_IF delete nothing: after\n");
+    print_list(test);
 
-
+    printf("\n\n");
+    printf("LIST_REMOVE_IF delete all: after\n");
+    ft_list_remove_if(&test, "data1", strcmp, free);
+    print_list(test);
+    printf("\n\n");
 
     /////////////////////////////////////////// free
     while (begin_list)

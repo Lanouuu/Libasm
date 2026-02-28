@@ -19,7 +19,7 @@ ft_write:
         neg rax                             ; on rend positif le code d'erreur
         push rax                            ; on stock le code d'erreur dans la stack
         call __errno_location wrt ..plt     ; on recupere l'adresse de errno
-        pop rdi                             ; on recupere le code d'erreur depuis la stack vers rdi
-        mov [rax], edi                      ; on copie le code d'erreur à l'adresse de errno
+        pop r10                             ; on recupere le code d'erreur depuis la stack vers rdi
+        mov [rax], r10d                     ; on copie le code d'erreur à l'adresse de errno
         mov rax, -1                         ; on return -1 (comportement de write)
         ret
