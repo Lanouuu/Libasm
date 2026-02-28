@@ -23,6 +23,7 @@ int main(int ac, char **av)
 
 
     /////////////////////////////////////////// ft_atoi_base
+    printf("ATOI_BASE:\n");
     printf("%d\n", ft_atoi_base(av[1], "0123456789abcdef"));
     printf("\n\n");
 
