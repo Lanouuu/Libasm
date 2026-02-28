@@ -2,7 +2,7 @@
 
 static void    print_list(t_list *list)
 {
-    int     i = 0;
+    int     i = 1;
     t_list  *temp = list;
 
     while (temp)
