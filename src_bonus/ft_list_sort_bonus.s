@@ -12,7 +12,8 @@ section .text
 global ft_list_sort
 
 
-; void ft_list_sort(t_list **begin_list, int (*cmp)())
+; void ft_list_sort(t_list **begin_list, int (*cmp)());
+
 ft_list_sort:
 
 	push rbp

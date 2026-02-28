@@ -69,8 +69,6 @@ ft_list_remove_if:
 
         jmp .while
 
-
-
     .deletehead:
         mov rdi, rbx
         mov rbx, [rbx + s_list.next]
@@ -80,7 +78,6 @@ ft_list_remove_if:
         call free wrt..plt
 
         jmp .while
-
 
     .return:
         mov rdi, [rbp - 8]

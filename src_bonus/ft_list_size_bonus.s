@@ -12,6 +12,7 @@ section .text
 global ft_list_size
 
 ; int	ft_list_size(t_list *begin_list);
+
 ft_list_size:
 
 	; rdi = *begin_list

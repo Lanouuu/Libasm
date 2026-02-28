@@ -1,15 +1,35 @@
 #include "./include/libasm_bonus.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+static void    print_list(t_list *list)
+{
+    int     i = 0;
+    t_list  *temp = list;
+
+    while (temp)
+    {
+        printf("Node %d data: %s\n", i++, (char *)temp->data);
+        temp = temp->next;
+    }
+    return;
+}
 
 int main(int ac, char **av)
 {
-    (void)ac;
-    (void)av;
-    // printf("%d\n", ft_atoi_base(av[1], "0123456789abcdef"));
+    if (ac != 2)
+    {
+        dprintf(2, "Need one argument for atoi_base");
+        return (1);
+    }
 
+
+    /////////////////////////////////////////// ft_atoi_base
+    printf("%d\n", ft_atoi_base(av[1], "0123456789abcdef"));
+    printf("\n\n");
+
+
+
+
+    /////////////////////////////////////////// ft_list_push_front
     t_list  *begin_list = NULL;
 
     char *data1 = strdup("data1");
@@ -18,7 +38,14 @@ int main(int ac, char **av)
     char *data4 = strdup("data4");
     char *data5 = strdup("data5");
     if (!data1 || !data2 || !data3 || !data4 || !data5)
+    {
+        free(data1);
+        free(data2);
+        free(data3);
+        free(data4);
+        free(data5);
         return (1);
+    }
 
     ft_list_push_front(&begin_list, data1);
     ft_list_push_front(&begin_list, data2);
@@ -26,46 +53,40 @@ int main(int ac, char **av)
     ft_list_push_front(&begin_list, data4);
     ft_list_push_front(&begin_list, data5);
 
+    printf("PUSH_FRONT:\n");
+    print_list(begin_list);
+    printf("\n\n");
+
+
+
+
+    /////////////////////////////////////////// ft_list_size
     int lSize = ft_list_size(begin_list);
-
     printf("List size = %d\n\n", lSize);
-    
-    int i = 0;
-    t_list *curs = begin_list;
-    printf("PUSH_FRONT\n");
-    while (begin_list)
-    {
-        printf("Node %d data: %s\n", i++, (char *)begin_list->data);
-        begin_list = begin_list->next;
-    }
+    printf("\n\n");
 
-    begin_list = curs;
+
+
+
+    /////////////////////////////////////////// ft_list_sort
     ft_list_sort(&begin_list, strcmp);
-    curs = begin_list;
-    printf("\n\n");
-
-    i = 0;
-    printf("LIST_SORT\n");
-    while (begin_list)
-    {
-        printf("Node %d data: %s\n", i++, (char *)begin_list->data);
-        begin_list = begin_list->next;
-    }
+    printf("LIST_SORT:\n");
+    print_list(begin_list);
     printf("\n\n");
 
 
-    begin_list = curs;
+
+
+    /////////////////////////////////////////// ft_list_remove_if
     ft_list_remove_if(&begin_list, "data3", strcmp, free);
-    printf("LIST_REMOVE_IF\n");
-    i = 0;
-    while (begin_list)
-    {
-        printf("Node %d data: %s\n", i++, (char *)begin_list->data);
-        begin_list = begin_list->next;
-    }
+    printf("LIST_REMOVE_IF:\n");
+    print_list(begin_list);
+    printf("\n\n");
 
-    begin_list = curs;
-    i = 0;
+
+
+
+    /////////////////////////////////////////// free
     while (begin_list)
     {
         t_list *temp = begin_list;
